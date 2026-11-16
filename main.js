@@ -2,6 +2,11 @@ import { drift } from './js/bg-drift.js?v=10';
 import { venom } from './js/venom.js?v=10';
 
 const REPO = 'OmarFive3/five-launcher-releases';
+// The site is pinned to ONE launcher version: the download button, badge and update list never go past it,
+// even when newer releases exist on GitHub. Change PIN (and the download link in index.html) to move it.
+const PIN = 'v0.2.7';
+const ver = t => (t || '').replace(/^v/, '').split('.').map(Number);
+const notNewer = t => { const a = ver(t), b = ver(PIN); for (let i = 0; i < 3; i++) if ((a[i] || 0) !== (b[i] || 0)) return (a[i] || 0) < (b[i] || 0); return true; };
 const q = new URLSearchParams(location.search);
 
 // ---------- mouse (or a fixed one for screenshots: ?mx=..&my=..) ----------
@@ -68,7 +73,7 @@ function frame(now) {
 requestAnimationFrame(frame);
 
 // ---------- releases from GitHub ----------
-const fallback = [{ tag_name: 'v0.1.0', published_at: '2026-11-16', body: '- First release\n- Install mods, modpacks, resource packs and shaders from Modrinth in one click\n- Fabric, Forge, NeoForge and Quilt\n- Microsoft sign-in\n- Skins page with a live 3D preview\n- Settings sync across instances\n- .mrpack import and export\n- Discord status' }];
+const fallback = [{ tag_name: 'v0.2.7', published_at: '2026-11-16T13:48:40Z', body: "- Much faster new instances: the launcher now reuses Minecraft files, mods, resource packs, shaders and Java already on your PC (official launcher, Modrinth App, CurseForge, Prism and more) instead of downloading them again. Every file is checked first, and other launchers' files are never changed.\n- Files on the same drive are shared, so they take no extra space.", assets: [{ name: 'Five-Launcher-Setup.exe', size: 48658877 }] }];
 const esc = s => s.replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
 function md(body) {
   const lines = (body || '').split(/\r?\n/).map(l => l.trim()).filter(Boolean);
@@ -85,4 +90,4 @@ function render(list) {
   if (a) document.querySelectorAll('[data-size]').forEach(e => e.textContent = `${Math.round(a.size / 1048576)} MB`);
 }
 render(fallback);
-if (!q.has('offline')) fetch(`https://api.github.com/repos/${REPO}/releases`).then(r => r.ok ? r.json() : []).then(l => { l = Array.isArray(l) ? l.filter(r => !r.draft && !r.prerelease) : []; if (l.length) render(l); }).catch(() => {});
+if (!q.has('offline')) fetch(`https://api.github.com/repos/${REPO}/releases`).then(r => r.ok ? r.json() : []).then(l => { l = Array.isArray(l) ? l.filter(r => !r.draft && !r.prerelease && notNewer(r.tag_name)) : []; if (l.length) render(l); }).catch(() => {});
