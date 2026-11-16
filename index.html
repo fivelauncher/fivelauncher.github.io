@@ -1,0 +1,133 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Five Launcher</title>
+<meta name="description" content="Five Launcher is a fast, clean Minecraft launcher. Mods, modpacks, resource packs and shaders from Modrinth in one click.">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; font-src 'self'; media-src 'self'; connect-src 'self' https://api.github.com; frame-src 'self'; object-src 'none'; base-uri 'self'; form-action 'none'">
+<meta name="referrer" content="strict-origin-when-cross-origin">
+<meta name="theme-color" content="#0E0E10">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Five Launcher">
+<meta property="og:description" content="A fast, clean Minecraft launcher. Mods, modpacks, resource packs and shaders from Modrinth in one click.">
+<meta property="og:image" content="assets/app.png">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="assets/five-icon-1024.png">
+<link rel="stylesheet" href="style.css?v=16">
+</head>
+<body>
+
+<!-- fixed layers: the background, then content, then the venom layer on top -->
+<canvas id="world" aria-hidden="true"></canvas>
+
+<header class="nav">
+  <a class="brand" href="#top"><img src="assets/five-icon-1024.png" alt=""><span>Five Launcher</span></a>
+  <nav>
+    <a href="#top" aria-current="page">Home</a>
+    <a href="#features">Features</a>
+    <a href="#updates">Updates</a>
+    <a href="#faq">FAQ</a>
+  </nav>
+</header>
+
+<main>
+  <!-- HERO: centred, the download button in the middle, the real launcher live underneath -->
+  <section class="hero" id="top">
+    <a class="badge rv" href="#updates"><i></i><span><b data-ver>v0.1.0</b> is out</span><em>See what's new</em></a>
+    <h1 class="rv">Five Launcher</h1>
+    <p class="lede rv">A fast, clean Minecraft launcher. Mods, modpacks, resource packs and shaders from Modrinth in one click.</p>
+    <div class="cta rv">
+      <a class="dl" data-venom href="https://github.com/OmarFive3/five-launcher-releases/releases/latest/download/Five-Launcher-Setup.exe">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4v11m0 0-4.5-4.5M12 15l4.5-4.5M5 19.5h14"/></svg>
+        <span>Download for Windows</span>
+      </a>
+    </div>
+    <p class="meta rv"><b data-ver>v0.1.0</b><span>·</span><span data-size>46 MB</span><span>·</span>Windows 10 and 11<span>·</span><a href="#faq">Is it safe?</a></p>
+
+    <div class="stage rv" id="stage">
+      <div class="spot" aria-hidden="true"></div>
+      <div class="win" id="win">
+        <div class="hint"><i></i>Live demo. Click around, it's the real launcher.</div>
+        <div class="screen" id="screen">
+          <iframe id="demo" title="Five Launcher, live demo" src="about:blank" data-src="demo/index.html?scene=plains"></iframe>
+          <button class="wake" id="wake" type="button"><span>Try the launcher</span></button>
+        </div>
+        <img class="still" src="assets/app.png" alt="Five Launcher's Home screen">
+      </div>
+    </div>
+  </section>
+
+  <!-- FEATURES: one compact grid instead of a screen per feature -->
+  <section class="block" id="features">
+    <div class="head">
+      <p class="kicker">Features</p>
+      <h2>Everything in one clean window.</h2>
+    </div>
+    <div class="grid">
+      <article class="card big">
+        <h3>One click. Every mod.</h3>
+        <p>Find mods, modpacks, resource packs and shaders on Modrinth and install them straight into an instance. Dependencies come with them.</p>
+        <ul class="chips"><li class="w">Modrinth</li><li>Fabric</li><li>Forge</li><li>NeoForge</li><li>Quilt</li></ul>
+      </article>
+      <article class="card">
+        <h3>Your skin, alive</h3>
+        <p>Change your skin with a live 3D preview, posed skin cards and Import skin.</p>
+      </article>
+      <article class="card">
+        <h3>Settings that follow you</h3>
+        <p>Game options, servers, resource packs and hotbars stay in sync across every instance.</p>
+      </article>
+      <article class="card">
+        <h3>Microsoft sign-in</h3>
+        <p>Sign in with your Minecraft account. Switch accounts in one click.</p>
+      </article>
+      <article class="card">
+        <h3>Share packs</h3>
+        <p>Import and export <code>.mrpack</code> files, or drag one onto the window.</p>
+      </article>
+      <article class="card">
+        <h3>Looks like yours</h3>
+        <p>28 ready-made instance icons or your own picture, and Discord status with your pack's icon.</p>
+      </article>
+      <article class="card">
+        <h3>Updates itself</h3>
+        <p>When a new version is out, an Update button appears in the top bar. One click.</p>
+      </article>
+    </div>
+  </section>
+
+  <!-- UPDATES + FAQ side by side -->
+  <section class="block duo">
+    <div class="col" id="updates">
+      <div class="head">
+        <p class="kicker">Updates</p>
+        <h2>What's new</h2>
+      </div>
+      <ol class="releases" id="releases"></ol>
+    </div>
+    <div class="col" id="faq">
+      <div class="head">
+        <p class="kicker">FAQ</p>
+        <h2>Questions</h2>
+      </div>
+      <details open><summary>Windows says "Windows protected your PC"</summary><p>Five Launcher isn't code-signed yet, so SmartScreen warns about new apps. Click <b>More info</b>, then <b>Run anyway</b>. The setup is the same file published on our GitHub releases.</p></details>
+      <details><summary>Where does it install?</summary><p>You choose the folder during setup. Your instances and worlds stay when you uninstall unless you remove them.</p></details>
+      <details><summary>Does it work with my mods?</summary><p>Yes: Fabric, Forge, NeoForge and Quilt, with mods, modpacks, resource packs and shaders from Modrinth.</p></details>
+      <details><summary>How does it update?</summary><p>When a new version is out, an <b>Update</b> button appears in the top bar. One click and it restarts on the new version.</p></details>    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="frow">
+    <a class="brand" href="#top"><img src="assets/five-icon-1024.png" alt=""><span>Five Launcher</span></a>
+    <p>Made by Omar. Character movement in the app is credited to Fresh Animations. The launcher talks to Microsoft for sign-in and to Modrinth for content. No tracking.</p>
+  </div>
+  <p class="legal">Not an official Minecraft product. Not approved by or associated with Mojang or Microsoft.</p>
+</footer>
+
+<canvas id="venom" aria-hidden="true"></canvas>
+
+<script type="module" src="main.js?v=11"></script>
+</body>
+</html>
