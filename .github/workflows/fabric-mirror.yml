@@ -1,0 +1,36 @@
+# Five Launcher's own copy of Fabric (the launcher's backup when a player can't reach fabricmc.net).
+# Runs every day and on demand; commits only when Fabric published something new; asks Pages to rebuild after.
+name: Fabric copy
+on:
+  schedule:
+    - cron: "17 4 * * *"
+  workflow_dispatch:
+permissions:
+  contents: write
+  pages: write
+concurrency:
+  group: fabric-mirror
+  cancel-in-progress: false
+jobs:
+  copy:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - name: Copy from Fabric (every jar checked against Fabric's sha1)
+        run: python3 tools/fabric_mirror.py .
+      - name: Commit if anything changed
+        id: commit
+        run: |
+          git add -A fabric
+          if git diff --cached --quiet; then echo "changed=no" >> "$GITHUB_OUTPUT"; exit 0; fi
+          git config user.name "fivelauncher-bot"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git commit -m "Fabric copy: $(python3 -c "import json;d=json.load(open('fabric/index.json'));print(', '.join(d['loaders']),'for',len(d['games']),'Minecraft versions')")"
+          git push
+          echo "changed=yes" >> "$GITHUB_OUTPUT"
+      - name: Rebuild the site
+        if: steps.commit.outputs.changed == 'yes'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh api -X POST "repos/${{ github.repository }}/pages/builds" || true
