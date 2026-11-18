@@ -1,0 +1,12 @@
+{
+  "title": "A whole new look",
+  "items": [
+    "A new dock with a big Play in the middle. The arrow inside Play picks what to play.",
+    "Your Library in one view, and Discover with a preview next to the list.",
+    "Continue right where you left off: your last world or server.",
+    "A crash helper that says what went wrong and fixes it with one button.",
+    "Five Wrapped, skin history, screenshot sharing and a new Privacy tab.",
+    "Just as light on your PC as 0.3.5."
+  ],
+  "images": ["1.webp", "2.webp", "3.webp"]
+}
