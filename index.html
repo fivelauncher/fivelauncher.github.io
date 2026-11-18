@@ -4,130 +4,127 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Five Launcher</title>
-<meta name="description" content="Five Launcher is a fast, clean Minecraft launcher. Mods, modpacks, resource packs and shaders from Modrinth in one click.">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; font-src 'self'; media-src 'self'; connect-src 'self' https://api.github.com; frame-src 'self'; object-src 'none'; base-uri 'self'; form-action 'none'">
+<meta name="description" content="Five Launcher is a fast, clean Minecraft launcher. Liquid smooth. Play Minecraft the best way.">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; font-src 'self'; media-src 'self'; connect-src 'self' https://api.github.com; object-src 'none'; base-uri 'self'; form-action 'none'">
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <meta name="theme-color" content="#0E0E10">
+<link rel="canonical" href="https://fivelauncher.github.io/">
 <meta property="og:type" content="website">
 <meta property="og:title" content="Five Launcher">
-<meta property="og:description" content="A fast, clean Minecraft launcher. Mods, modpacks, resource packs and shaders from Modrinth in one click.">
-<meta property="og:image" content="assets/app.png">
+<meta property="og:description" content="A fast, clean Minecraft launcher. Liquid smooth. Play Minecraft the best way.">
+<meta property="og:url" content="https://fivelauncher.github.io/">
+<meta property="og:image" content="https://fivelauncher.github.io/assets/og.jpg">
 <meta name="twitter:card" content="summary_large_image">
 <link rel="icon" href="assets/five-icon-1024.png">
-<link rel="stylesheet" href="style.css?v=16">
+<link rel="preload" href="assets/fredoka.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="base.css?v=1">
+<link rel="stylesheet" href="d3.css?v=9">
+<link rel="stylesheet" href="story.css?v=9">
 </head>
-<body>
-
-<!-- fixed layers: the background, then content, then the venom layer on top -->
-<canvas id="world" aria-hidden="true"></canvas>
-
-<header class="nav">
-  <a class="brand" href="#top"><img src="assets/five-icon-1024.png" alt=""><span>Five Launcher</span></a>
-  <nav>
-    <a href="#top" aria-current="page">Home</a>
-    <a href="#features">Features</a>
-    <a href="#updates">Updates</a>
-    <a href="#faq">FAQ</a>
-  </nav>
-</header>
-
-<main>
-  <!-- HERO: centred, the download button in the middle, the real launcher live underneath -->
-  <section class="hero" id="top">
-    <a class="badge rv" href="#updates"><i></i><span><b data-ver>v0.2.7</b> is out</span><em>See what's new</em></a>
-    <h1 class="rv">Five Launcher</h1>
-    <p class="lede rv">A fast, clean Minecraft launcher. Mods, modpacks, resource packs and shaders from Modrinth in one click.</p>
-    <div class="cta rv">
-      <a class="dl" data-venom href="https://github.com/OmarFive3/five-launcher-releases/releases/download/v0.2.7/Five-Launcher-Setup.exe">
-        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4v11m0 0-4.5-4.5M12 15l4.5-4.5M5 19.5h14"/></svg>
-        <span>Download for Windows</span>
-      </a>
+<body class="d3">
+<div class="stage-bg"><div class="story"></div></div>
+<div class="app">
+  <aside class="rail">
+    <a class="brand omar" href="#creator" data-go="creator" title="About OmarFive, the creator" aria-label="OmarFive, the creator"><span class="omar-mark" aria-hidden="true">F</span><span>OmarFive</span></a>
+    <div class="rail-nav">
+      <nav class="progress" id="progress" data-axis="y" aria-label="Where you are"><span class="pr-track" aria-hidden="true"><i class="pr-fill" id="prFill"></i></span></nav>
+      <nav class="biglist" id="nav" aria-label="Pages">
+        <i class="nav-blob" id="navBlob" aria-hidden="true"></i>
+      <a href="#home" data-go="home"><i>01</i>Home</a>
+      <a href="#screens" data-go="screens"><i>02</i>Screens</a>
+      <a href="#features" data-go="features"><i>03</i>Features</a>
+      <a href="#updates" data-go="updates"><i>04</i>Updates</a>
+      <a href="#faq" data-go="faq"><i>05</i>Questions</a>
+      <a href="#creator" data-go="creator"><i>06</i>Creator</a>
+      </nav>
     </div>
-    <p class="meta rv"><b data-ver>v0.2.7</b><span>·</span><span data-size>46 MB</span><span>·</span>Windows 10 and 11<span>·</span><a href="#faq">Is it safe?</a></p>
-
-    <div class="stage rv" id="stage">
-      <div class="spot" aria-hidden="true"></div>
-      <div class="win" id="win">
-        <div class="hint"><i></i>Live demo. Click around, it's the real launcher.</div>
-        <div class="screen" id="screen">
-          <iframe id="demo" title="Five Launcher, live demo" src="about:blank" data-src="demo/index.html"></iframe>
-          <button class="wake" id="wake" type="button"><span>Try the launcher</span></button>
+    <a class="pill-dl" data-dl href="#home"><span>Download</span><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M8 2.5v8M4.7 7.3 8 10.6l3.3-3.3M3 12.8q5 2.4 10 0"/></svg></a>
+  </aside>
+  <main class="board" id="board">
+    <section class="view v-home " id="v-home" aria-label="Home">
+      <div class="h-col">
+      <div class="h-title" data-card>
+        <div data-rise="1"><a class="badge" href="#updates"><i></i><span><b data-ver>v0.3.4</b> is out</span><em>Free for Windows</em></a></div>
+        <div data-rise="2"><h1><span class="l1">Liquid smooth.</span><span class="l2">Play Minecraft the best way.</span></h1></div>
+        <div data-rise="3"><p class="lede">Mods, modpacks, resource packs and shaders in one click. Fabric, Forge, NeoForge and Quilt built in.</p></div>
+        <div data-rise="4"><p class="cta-note">Updates itself to the newest version on first start.</p></div>
+      </div>
+      <div class="drop" data-card data-rgb=".05,.05,.06" data-rise="5">
+        <span class="edge-run" aria-hidden="true"><i></i></span>
+        <span class="burst" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></span>
+        <a class="dl" id="dl" href="https://github.com/OmarFive3/five-launcher-releases/releases/download/v0.3.4/Five-Launcher-Setup.exe">
+            <span class="dl-fill" aria-hidden="true"></span>
+            <span class="dl-ic" aria-hidden="true"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M8 2.5v8M4.7 7.3 8 10.6l3.3-3.3M3 12.8q5 2.4 10 0"/></svg></span>
+            <span class="dl-txt"><b>Download</b><small>for Windows, <span data-size>14 MB</span></small></span>
+          </a>
+      </div>
+      <div class="bubs"><div class="bub b1 card" data-card data-rise="6"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M8 13.4 2.9 8.3a3 3 0 0 1 4.3-4.3l.8.8.8-.8a3 3 0 0 1 4.3 4.3Z"/></svg><span>Free</span></div><div class="bub b2 card" data-card data-rise="7"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3.5 19 6v5.5c0 4.3-2.9 7.6-7 9-4.1-1.4-7-4.7-7-9V6Z"/><path d="m9 12 2.2 2.2L15.3 10"/></svg><span>No tracking</span></div><div class="bub b3 card" data-card data-rise="8"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3.5" y="3.5" width="7" height="7" rx="2"/><rect x="13.5" y="3.5" width="7" height="7" rx="2"/><rect x="3.5" y="13.5" width="7" height="7" rx="2"/><rect x="13.5" y="13.5" width="7" height="7" rx="2"/></svg><span>4 loaders</span></div></div>
+      </div>
+    </section>
+    <section class="view v-screens page" id="v-screens" aria-labelledby="t-screens" hidden>
+      <header class="ph"><h2 class="pt" id="t-screens" tabindex="-1">Screens</h2><p class="ps">Every screen, the way it looks on your PC</p></header>
+      <div class="blobwin card" data-card data-pic data-rgb=".1,.1,.11"><div class="deck-wrap"><div class="deck" id="deck"  aria-roledescription="carousel" aria-label="Launcher screenshots">
+            <figure class="card-shot" data-name="Home"><img src="assets/shots/home.webp" alt="Home: your character at a desk in a 3D bedroom, with the Play button" decoding="async"></figure>
+            <figure class="card-shot" data-name="Discover"><img src="assets/shots/discover.webp" alt="Discover: mods, modpacks, resource packs and shaders" loading="lazy" decoding="async"></figure>
+            <figure class="card-shot" data-name="Library"><img src="assets/shots/library.webp" alt="Library: your instances" loading="lazy" decoding="async"></figure>
+            <figure class="card-shot" data-name="Skins"><img src="assets/shots/skins.webp" alt="Skins: a live 3D preview of your skin" loading="lazy" decoding="async"></figure>
+            <figure class="card-shot" data-name="Screenshots"><img src="assets/shots/screenshots.webp" alt="Screenshots from every instance in one place" loading="lazy" decoding="async"></figure>
+            <figure class="card-shot" data-name="Settings"><img src="assets/shots/settings.webp" alt="Settings" loading="lazy" decoding="async"></figure>
+          </div></div></div>
+      <div class="seg" id="seg" data-card role="tablist" aria-label="Screens"><i class="seg-hl" aria-hidden="true"></i></div>
+    </section>
+    <section class="view v-features page" id="v-features" aria-labelledby="t-features" hidden>
+      <header class="ph"><h2 class="pt" id="t-features" tabindex="-1">Features</h2><p class="ps">Everything in one clean window</p></header>
+      <section class="score card" data-card data-pic data-rgb=".09,.09,.1" aria-labelledby="t-score">
+        <div class="sc-side">
+          <h3 id="t-score"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4.5 17a7.5 7.5 0 1 1 15 0"/><path d="m12 17 3.6-5"/><circle cx="12" cy="17" r="1.2"/></svg>Speed score</h3>
+          <span class="sample">Sample data</span>
+          <div class="sc-big"><b class="sc-num" data-score>0</b><span>/ 100</span></div>
+          <p class="sc-sub">Five Launcher's overall score: opening, starting Minecraft, installing a modpack and memory use, against other launchers.</p>
+          <ol class="sc-board" aria-label="Overall scores"></ol>
+          <p class="g-note">Higher is better. Placeholder numbers, the real test is coming.</p>
         </div>
-        <img class="still" src="assets/app.png" alt="Five Launcher's Home screen">
+        <div class="g-main">
+          <header class="g-top"><span class="g-title">Score in each test</span><em class="g-x"></em></header>
+          <div class="g-plot" role="img"></div>
+        </div>
+      </section>
+      <div class="fbars"><article class="fbar" data-card tabindex="0" aria-describedby="fd0"><span class="fx"><span class="fx-glow" aria-hidden="true"></span><span class="f-ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M10 3.5c.6 3.8 2.2 5.4 6 6-3.8.6-5.4 2.2-6 6-.6-3.8-2.2-5.4-6-6 3.8-.6 5.4-2.2 6-6ZM17.8 14.6c.3 1.7 1 2.4 2.7 2.7-1.7.3-2.4 1-2.7 2.7-.3-1.7-1-2.4-2.7-2.7 1.7-.3 2.4-1 2.7-2.7Z"/></svg></span><b>One click, every mod</b></span><span class="ftip" id="fd0" role="tooltip">Find mods, modpacks, resource packs and shaders and install them straight into an instance. Dependencies come with them.</span></article><article class="fbar" data-card tabindex="0" aria-describedby="fd1"><span class="fx"><span class="fx-glow" aria-hidden="true"></span><span class="f-ic"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="7.4" y="3.5" width="9.2" height="9.2" rx="2.2"/><path d="M10.4 7.6v1.3M13.6 7.6v1.3M4.2 20.5v-1.1a4.3 4.3 0 0 1 4.3-4.3h7a4.3 4.3 0 0 1 4.3 4.3v1.1"/></svg></span><b>Your skin, alive</b></span><span class="ftip" id="fd1" role="tooltip">Change your skin with a live 3D preview.</span></article><article class="fbar" data-card tabindex="0" aria-describedby="fd2"><span class="fx"><span class="fx-glow" aria-hidden="true"></span><span class="f-ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4.5 12a7.5 7.5 0 0 1 13-5.1M19.5 12a7.5 7.5 0 0 1-13 5.1M17.8 3.6v3.6h-3.6M6.2 20.4v-3.6h3.6"/></svg></span><b>Settings follow you</b></span><span class="ftip" id="fd2" role="tooltip">Options, servers and hotbars stay in sync across every instance.</span></article><article class="fbar" data-card tabindex="0" aria-describedby="fd3"><span class="fx"><span class="fx-glow" aria-hidden="true"></span><span class="f-ic"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8.5" r="4"/><path d="M4.5 20.5a7.5 7.5 0 0 1 15 0"/></svg></span><b>Microsoft sign-in</b></span><span class="ftip" id="fd3" role="tooltip">Sign in with your Minecraft account. Switch in one click.</span></article><article class="fbar" data-card tabindex="0" aria-describedby="fd4"><span class="fx"><span class="fx-glow" aria-hidden="true"></span><span class="f-ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 15.5V3.8M7.6 8.2 12 3.8l4.4 4.4M4.5 14v3.7a2.5 2.5 0 0 0 2.5 2.5h10a2.5 2.5 0 0 0 2.5-2.5V14"/></svg></span><b>Share packs</b></span><span class="ftip" id="fd4" role="tooltip">Import and export <code>.mrpack</code> files, or drop one on the window.</span></article><article class="fbar" data-card tabindex="0" aria-describedby="fd5"><span class="fx"><span class="fx-glow" aria-hidden="true"></span><span class="f-ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M10 3.5c.6 3.8 2.2 5.4 6 6-3.8.6-5.4 2.2-6 6-.6-3.8-2.2-5.4-6-6 3.8-.6 5.4-2.2 6-6Z"/></svg></span><b>Looks like yours</b></span><span class="ftip" id="fd5" role="tooltip">Instance icons or your own picture, and Discord status with your pack's icon.</span></article><article class="fbar" data-card tabindex="0" aria-describedby="fd6"><span class="fx"><span class="fx-glow" aria-hidden="true"></span><span class="f-ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 16.5V11a6 6 0 0 1 12 0v5.5l1.5 2h-15ZM10 20.5a2 2 0 0 0 4 0"/></svg></span><b>Updates itself</b></span><span class="ftip" id="fd6" role="tooltip">When a new version is out, an Update button appears in the top bar. One click.</span></article></div>
+    </section>
+    <section class="view v-updates page" id="v-updates" aria-labelledby="t-updates" hidden>
+      <header class="ph"><h2 class="pt" id="t-updates" tabindex="-1">Updates</h2><p class="ps">What changed in each version</p></header>
+      <div class="updates-body">
+        <article class="latest wcard" id="latest" data-card data-white></article>
+        <ol class="releases" id="releases" data-scroll></ol>
       </div>
-    </div>
-  </section>
-
-  <!-- FEATURES: one compact grid instead of a screen per feature -->
-  <section class="block" id="features">
-    <div class="head">
-      <p class="kicker">Features</p>
-      <h2>Everything in one clean window.</h2>
-    </div>
-    <div class="grid">
-      <article class="card big">
-        <h3>One click. Every mod.</h3>
-        <p>Find mods, modpacks, resource packs and shaders on Modrinth and install them straight into an instance. Dependencies come with them.</p>
-        <ul class="chips"><li class="w">Modrinth</li><li>Fabric</li><li>Forge</li><li>NeoForge</li><li>Quilt</li></ul>
-      </article>
-      <article class="card">
-        <h3>Your skin, alive</h3>
-        <p>Change your skin with a live 3D preview, posed skin cards and Import skin.</p>
-      </article>
-      <article class="card">
-        <h3>Settings that follow you</h3>
-        <p>Game options, servers, resource packs and hotbars stay in sync across every instance.</p>
-      </article>
-      <article class="card">
-        <h3>Microsoft sign-in</h3>
-        <p>Sign in with your Minecraft account. Switch accounts in one click.</p>
-      </article>
-      <article class="card">
-        <h3>Share packs</h3>
-        <p>Import and export <code>.mrpack</code> files, or drag one onto the window.</p>
-      </article>
-      <article class="card">
-        <h3>Looks like yours</h3>
-        <p>28 ready-made instance icons or your own picture, and Discord status with your pack's icon.</p>
-      </article>
-      <article class="card">
-        <h3>Updates itself</h3>
-        <p>When a new version is out, an Update button appears in the top bar. One click.</p>
-      </article>
-    </div>
-  </section>
-
-  <!-- UPDATES + FAQ side by side -->
-  <section class="block duo">
-    <div class="col" id="updates">
-      <div class="head">
-        <p class="kicker">Updates</p>
-        <h2>What's new</h2>
+    </section>
+    <section class="view v-faq page" id="v-faq" aria-labelledby="t-faq" hidden>
+      <header class="ph"><h2 class="pt" id="t-faq" tabindex="-1">Questions</h2><p class="ps">The short answers</p></header>
+      <div class="faq-body" data-scroll>
+          <div class="card qa  open" data-card data-light><button class="q" aria-expanded="true">Windows says "Windows protected your PC"</button><div class="a"><div><p>Five Launcher isn't code-signed yet, so SmartScreen warns about new apps. Click <b>More info</b>, then <b>Run anyway</b>. The setup is the same file published on our GitHub releases.</p></div></div></div>
+          <div class="card qa " data-card data-light><button class="q" aria-expanded="false">Is it free?</button><div class="a"><div><p>Yes. No ads, no account on our side, no tracking. You sign in with your own Minecraft account.</p></div></div></div>
+          <div class="card qa " data-card data-light><button class="q" aria-expanded="false">Where does it install?</button><div class="a"><div><p>In your own user folders. Your instances and worlds stay when you uninstall unless you remove them.</p></div></div></div>
+          <div class="card qa " data-card data-light><button class="q" aria-expanded="false">Does it work with my mods?</button><div class="a"><div><p>Yes: Fabric, Forge, NeoForge and Quilt, with mods, modpacks, resource packs and shaders.</p></div></div></div>
+          <div class="card qa " data-card data-light><button class="q" aria-expanded="false">How does it update?</button><div class="a"><div><p>When a new version is out, an <b>Update</b> button appears in the top bar. One click and it restarts on the new version.</p></div></div></div>
       </div>
-      <ol class="releases" id="releases"></ol>
-    </div>
-    <div class="col" id="faq">
-      <div class="head">
-        <p class="kicker">FAQ</p>
-        <h2>Questions</h2>
+    </section>
+    <section class="view v-creator page" id="v-creator" aria-labelledby="t-creator" hidden>
+      <header class="ph"><h2 class="pt" id="t-creator" tabindex="-1">Creator</h2><p class="ps">Who makes Five Launcher</p></header>
+      <div class="cr">
+        <img class="cr-avatar" data-card data-pic data-round data-rgb=".29,.09,.56" src="assets/creator-avatar.webp" alt="OmarFive's avatar, wearing a crown" width="300" height="300" decoding="async">
+        <div class="cr-banner pic" data-card data-rgb=".06,.1,.2"><img src="assets/creator-banner.webp" alt="OmarFive's channel banner: drawing at his desk at night" loading="lazy" decoding="async"></div>
+        <div class="cr-me card" data-card data-light><h3>OmarFive</h3><p>I make Minecraft videos on YouTube and build the tools behind them. Five Launcher started as the launcher I wanted for myself: fast, clean and out of the way, so you can just play.</p></div>
+        <div class="cr-links"><a class="rl card" data-card data-round href="https://www.youtube.com/@OmarFive" rel="noopener" aria-label="YouTube"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="2.8" y="5.5" width="18.4" height="13" rx="4"/><path d="M10.2 9.4v5.2l4.4-2.6Z"/></svg><span>YouTube</span></a><a class="rl card" data-card data-round href="https://discord.gg/5UTvDzMkHw" rel="noopener" aria-label="Discord"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7.5 7.2q4.5-1.6 9 0 1.9 3 2.2 7.8-1.9 1.6-4 2.2l-1-1.6M7.5 7.2Q5.6 10.2 5.3 15q1.9 1.6 4 2.2l1-1.6"/><circle cx="9.6" cy="12.4" r=".9"/><circle cx="14.4" cy="12.4" r=".9"/></svg><span>Discord</span></a><a class="rl card" data-card data-round href="https://modrinth.com/user/OmarFive" rel="noopener" aria-label="Modrinth"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3.5" y="3.5" width="7" height="7" rx="2"/><rect x="13.5" y="3.5" width="7" height="7" rx="2"/><rect x="3.5" y="13.5" width="7" height="7" rx="2"/><rect x="13.5" y="13.5" width="7" height="7" rx="2"/></svg><span>Modrinth</span></a></div>
+        <div class="cr-card wcard" data-card data-white><b>OmarFive's mods</b><p>My mods and modpacks are one click away on Home inside the launcher.</p></div>
+        <div class="cr-card card muted" data-card data-light><p>The character animations in the app are my own. The launcher talks to Microsoft for sign-in and to Modrinth for content. No tracking.</p></div>
       </div>
-      <details open><summary>Windows says "Windows protected your PC"</summary><p>Five Launcher isn't code-signed yet, so SmartScreen warns about new apps. Click <b>More info</b>, then <b>Run anyway</b>. The setup is the same file published on our GitHub releases.</p></details>
-      <details><summary>Where does it install?</summary><p>You choose the folder during setup. Your instances and worlds stay when you uninstall unless you remove them.</p></details>
-      <details><summary>Does it work with my mods?</summary><p>Yes: Fabric, Forge, NeoForge and Quilt, with mods, modpacks, resource packs and shaders from Modrinth.</p></details>
-      <details><summary>How does it update?</summary><p>When a new version is out, an <b>Update</b> button appears in the top bar. One click and it restarts on the new version.</p></details>    </div>
-  </section>
-</main>
-
-<footer>
-  <div class="frow">
-    <a class="brand" href="#top"><img src="assets/five-icon-1024.png" alt=""><span>Five Launcher</span></a>
-    <p>Made by Omar. Character movement in the app is credited to Fresh Animations. The launcher talks to Microsoft for sign-in and to Modrinth for content. No tracking.</p>
-  </div>
-  <p class="legal">Not an official Minecraft product. Not approved by or associated with Mojang or Microsoft.</p>
-</footer>
-
-<canvas id="venom" aria-hidden="true"></canvas>
-
-<script type="module" src="main.js?v=13"></script>
+    </section>
+  </main>
+</div>
+<p class="legal">Not an official Minecraft product. Not approved by or associated with Mojang or Microsoft. Modrinth is a trademark of its owner; Five Launcher is not affiliated with Modrinth.</p>
+<script type="module" src="engine.js?v=2"></script>
+<script type="module" src="download-help.js?v=2"></script>
+<script type="module" src="d3.js?v=6"></script>
+<script type="module" src="story.js?v=9"></script>
 </body>
 </html>

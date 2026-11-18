@@ -1,0 +1,84 @@
+/* Download help panel (download-help.js). Warm on purpose: yellow text and emoji are Omar's request for this panel only.
+   Cheap to show: a plain dark scrim (no backdrop blur), the panel springs in with transform and opacity. */
+.dh { position: fixed; inset: 0; z-index: 100; display: grid; place-items: center; padding: 16px; }
+.dh[hidden] { display: none; }
+.dh-scrim { position: absolute; inset: 0; background: rgba(6,6,7,.72); opacity: 0; transition: opacity .3s ease; }
+.dh.on .dh-scrim { opacity: 1; }
+html.dh-open, html.dh-open body { overflow: hidden; }
+
+.dh-panel { position: relative; width: min(640px, 100%); max-height: calc(100vh - 32px); overflow: auto; overscroll-behavior: contain; scrollbar-width: thin; scrollbar-color: #343439 transparent;
+  padding: 30px 30px 24px; border-radius: 32px; background: #161618; color: #F4F4F5; text-align: center;
+  box-shadow: 0 40px 80px -30px rgba(0,0,0,.8), inset 0 0 0 1px rgba(255,255,255,.08), inset 0 1px 0 rgba(255,255,255,.08);
+  opacity: 0; transform: translateY(24px) scale(.94); transition: opacity .3s ease, transform .55s cubic-bezier(.3,1.35,.4,1); will-change: transform; }
+.dh.on .dh-panel { opacity: 1; transform: none; }
+/* a soft warm glow behind the heading (static, painted once) */
+.dh-panel::before { content: ""; position: absolute; left: 50%; top: -120px; width: 420px; height: 260px; margin-left: -210px; border-radius: 50%; pointer-events: none;
+  background: radial-gradient(closest-side, rgba(255,201,58,.16), transparent); }
+
+.dh-x { position: absolute; right: 16px; top: 16px; width: 38px; height: 38px; border: 0; border-radius: 50%; background: #29292D; color: #C8C8CD; display: grid; place-items: center; cursor: pointer; transition: transform .3s cubic-bezier(.34,1.7,.5,1), background .2s; }
+.dh-x svg { width: 16px; height: 16px; fill: none; stroke: currentColor; stroke-width: 2.4; stroke-linecap: round; }
+.dh-x:hover { background: #343439; color: #F4F4F5; transform: rotate(90deg); }
+
+.dh-hello { position: relative; font-size: 46px; line-height: 1; margin-bottom: 10px; display: inline-block; }
+.dh.on .dh-hello { animation: dh-pop .7s cubic-bezier(.3,1.6,.4,1) .12s both; }
+@keyframes dh-pop { from { transform: scale(.3) rotate(-25deg); opacity: 0; } }
+.dh-panel h2 { position: relative; font-size: clamp(24px, 3.4vw, 31px); line-height: 1.12; font-weight: 650; letter-spacing: -.01em; font-kerning: none; outline: none; margin: 0 0 8px; }
+.dh-lead { color: #C8C8CD; font-size: 16px; margin: 0 0 18px; }
+.dh-warm { color: #FFC93A; font-size: 16px; font-weight: 600; line-height: 1.5; margin: 0 auto 20px; max-width: 34em; padding: 14px 18px; border-radius: 20px; background: rgba(255,201,58,.08); }
+.dh-warm b { color: #FFD866; }
+
+/* the three steps with their pictures */
+.dh-steps { list-style: none; margin: 0 0 16px; padding: 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; }
+.dh-steps li { display: flex; flex-direction: column; gap: 10px; }
+.dh-steps p { margin: 0; font-size: 14px; font-weight: 600; color: #FFC93A; display: flex; align-items: center; justify-content: center; gap: 7px; }
+.dh-steps p b { color: #FFD866; }
+.dh-steps .n { width: 22px; height: 22px; border-radius: 50%; background: #FFC93A; color: #0E0E10; font-size: 12px; font-weight: 700; display: grid; place-items: center; flex: none; }
+.dh-pic { aspect-ratio: 4 / 3; border-radius: 16px; overflow: hidden; background: #0E0E10; box-shadow: inset 0 0 0 1px rgba(255,255,255,.06); }
+.dh.on .dh-steps li { animation: dh-rise .6s cubic-bezier(.3,1.25,.4,1) both; }
+.dh.on .dh-steps li:nth-child(1) { animation-delay: .16s; } .dh.on .dh-steps li:nth-child(2) { animation-delay: .24s; } .dh.on .dh-steps li:nth-child(3) { animation-delay: .32s; }
+@keyframes dh-rise { from { opacity: 0; transform: translateY(14px); } }
+.dh-done { display: grid; place-items: center; background: radial-gradient(circle at 50% 45%, rgba(255,201,58,.18), #0E0E10 70%); }
+.dh-done span { font-size: 44px; }
+
+/* a drawn SmartScreen window (Windows' blue warning), small and simplified */
+.ss { height: 100%; display: flex; flex-direction: column; background: #1C5BA8; text-align: left; font-family: "Segoe UI", system-ui, sans-serif; color: #fff; }
+.ss-bar { height: 12%; background: #174C8E; display: flex; justify-content: flex-end; align-items: center; padding: 0 6%; }
+.ss-bar i { width: 8%; height: 40%; border-radius: 2px; background: rgba(255,255,255,.35); }
+.ss-body { flex: 1; padding: 6% 8% 0; display: flex; flex-direction: column; gap: 5%; }
+.ss-title { font-size: clamp(9px, 1.5vw, 12px); font-weight: 600; line-height: 1.15; }
+.ss-line { height: 4px; border-radius: 2px; background: rgba(255,255,255,.4); width: 90%; } .ss-line.short { width: 60%; }
+.ss-meta { font-size: clamp(6.5px, 1vw, 8.5px); color: rgba(255,255,255,.85); } .ss-meta em { font-style: normal; font-weight: 600; color: #fff; }
+.ss-link { position: relative; align-self: flex-start; font-size: clamp(7px, 1.1vw, 9.5px); text-decoration: underline; }
+.ss-foot { height: 22%; background: #174C8E; display: flex; justify-content: flex-end; align-items: center; gap: 5%; padding: 0 6%; }
+.ss-btn { position: relative; font-size: clamp(6.5px, 1vw, 8.5px); padding: 4% 7%; border: 1px solid rgba(255,255,255,.7); white-space: nowrap; }
+/* what to press: a yellow ring that breathes, and a little pointer */
+.hot { outline: 2px solid #FFC93A; outline-offset: 3px; border-radius: 4px; }
+.dh.on .hot { animation: dh-ring 1.6s ease-in-out infinite; }
+@keyframes dh-ring { 50% { outline-offset: 6px; } }
+.ss-cursor { position: absolute; right: -14px; bottom: -14px; width: 14px; height: 14px; background: #fff;
+  clip-path: polygon(0 0, 0 100%, 30% 72%, 50% 100%, 64% 92%, 46% 66%, 85% 66%); filter: drop-shadow(0 1px 1px rgba(0,0,0,.5)); }
+
+.dh-why { margin: 0 auto 18px; max-width: 34em; text-align: left; border-radius: 20px; background: #1F1F22; box-shadow: inset 0 1px 0 rgba(255,255,255,.06); }
+.dh-why summary { list-style: none; cursor: pointer; padding: 14px 18px; font-weight: 600; font-size: 15px; color: #F4F4F5; border-radius: inherit; transition: background .2s; }
+.dh-why summary::-webkit-details-marker { display: none; }
+.dh-why summary:hover { background: #29292D; }
+.dh-why p { margin: 0; padding: 0 18px 16px; color: #C8C8CD; font-size: 14.5px; line-height: 1.55; }
+
+.dh-actions { display: flex; flex-direction: column; align-items: center; gap: 10px; }
+.dh-ok { border: 0; cursor: pointer; height: 52px; padding: 0 28px; border-radius: 999px; background: #F2F2F3; color: #0E0E10; font: 650 16.5px Fredoka, system-ui, sans-serif;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.55); transition: transform .25s cubic-bezier(.34,1.7,.5,1); }
+.dh-ok:hover { transform: translateY(-2px); }
+.dh-ok:active { transform: scale(.95); }
+.dh-again { font-size: 13px; color: #8E8E96; text-decoration: underline; text-underline-offset: 3px; }
+.dh-again:hover { color: #C8C8CD; }
+.dh :focus-visible { outline: 3px solid #F2F2F3; outline-offset: 3px; }
+
+@media (max-width: 560px) {
+  .dh-panel { padding: 26px 18px 20px; border-radius: 26px; }
+  .dh-steps { grid-template-columns: 1fr; }
+  .dh-pic { aspect-ratio: 16 / 9; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .dh *, .dh-panel, .dh-scrim { transition: none !important; animation: none !important; }
+}
+.dh-panel h2:focus, .dh-panel h2:focus-visible { outline: none; }

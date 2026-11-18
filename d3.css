@@ -1,0 +1,254 @@
+/* Design concept 3: DROPS (Omar's pick, Nov 17 2026). Round shapes: the bedroom in a big rounded rectangle, a big
+   round Download drop with a warm gold glow (gold joined the site's brand colours for this), features as drops you can
+   play with, a wide speed graph, a big list for the nav with the progress line beside it, and a subtle background
+   (three styles to preview, see d3.js). engine.js does the morph; d3.js does this page's own motion.
+   No CSS transforms on cards at rest: the morph moves cards with transform, so cards are placed with left/top. */
+.app { position: relative; z-index: 1; height: calc(100vh - 26px); display: grid; grid-template-columns: 268px minmax(0, 1fr); padding: 16px 22px 16px 0; }
+:root { --gold: #FFC93A; --gold2: #FFB21F; --gold-soft: rgba(255,201,58,.14); }
+
+/* ---- the rail: brand, the big list, Download ---- */
+.rail { position: relative; z-index: 6; display: flex; flex-direction: column; padding: 8px 10px 6px 26px; min-height: 0; }
+.rail-nav { flex: 1; display: grid; grid-template-columns: 20px auto; column-gap: 10px; align-content: center; justify-content: start; }
+.biglist { position: relative; display: flex; flex-direction: column; align-items: flex-start; gap: 4px; }
+.biglist a { position: relative; z-index: 1; display: inline-flex; align-items: baseline; gap: 10px; padding: 9px 22px 11px 16px; border-radius: 999px; font-size: 27px; font-weight: 600; line-height: 1.15; color: var(--tx3); white-space: nowrap; transition: color .25s, transform .3s var(--spring); }
+.biglist a i { font-style: normal; font-size: 11px; font-weight: 700; font-variant-numeric: tabular-nums; }
+.biglist a::before { content: ""; position: absolute; inset: 0; z-index: -1; border-radius: inherit; background: rgba(255,255,255,.06); opacity: 0; transform: scale(.9); transition: opacity .2s, transform .35s var(--spring); }
+.biglist a:hover { color: var(--tx); } .biglist a:hover::before { opacity: 1; transform: none; } .biglist a.on::before { opacity: 0; }
+.biglist a:active { transform: scale(.95); transition-duration: .08s; }
+.biglist a.on { color: var(--on-acc); }
+/* the side Download only shows once you leave Home (Home has the big one) */
+.rail .pill-dl { align-self: flex-start; height: 50px; padding: 0 20px 0 22px; font-size: 16px; transition: transform .5s var(--spring), opacity .3s; }
+body:has(#v-home:not([hidden]):not(.leaving)) .rail .pill-dl { opacity: 0; transform: translateY(16px) scale(.6); pointer-events: none; visibility: hidden; transition: transform .3s ease-in, opacity .2s, visibility 0s .3s; }
+.progress { position: relative; margin: 30px 0; }
+.progress .pr-track { left: 9px; top: 0; bottom: 0; width: 2px; }
+.progress .pr-fill { transform-origin: 50% 0; transform: scaleY(0); }
+.progress .pr-dot { left: 0; margin-top: -10px; }
+.progress .pr-dot > span { display: none; }
+
+/* ================= HOME ================= */
+.v-home { position: relative; container-type: size; }
+.v-home > * { position: absolute; }
+/* the scene: the launcher story (story.js) in a black window with a neon edge, sized to the story's shape and
+   centred on the right (placed with left/top, not transform: it is a morph card) */
+.scene { --w: min(61cqw, 100cqh * 1.47); right: 0; width: var(--w); height: calc(var(--w) * .68); top: calc(50cqh - var(--w) * .34); border-radius: 44px; }
+.h-col { left: 1%; top: 6%; width: 37%; z-index: 2; display: flex; flex-direction: column; align-items: flex-start; gap: 30px; }
+.h-title { display: flex; flex-direction: column; align-items: flex-start; gap: 16px; border-radius: 30px; }
+h1 { display: flex; flex-direction: column; line-height: .96; text-shadow: 0 4px 30px rgba(14,14,16,.5); }
+h1 .l1 { font-size: clamp(50px, 5vw, 92px); font-weight: 650; }
+h1 .l2 { font-size: clamp(22px, 2.1vw, 34px); font-weight: 550; color: var(--tx2); margin-top: 12px; }
+.lede { color: var(--tx2); font-size: 17px; max-width: 24em; text-shadow: 0 2px 16px rgba(14,14,16,.7); }
+
+/* the Download button (after Omar's two references): a black pill. At rest only its text glows. On hover a light
+   runs round its edge (gold into violet, a white-hot tip). A click fires energy streaks out of it (d3.js adds .fire).
+   The button itself never moves and has no glow behind it. Transform and opacity only. */
+.drop { position: relative; z-index: 4; width: 380px; height: 104px; border-radius: 999px; margin: 8px 0 0 6px; }
+.drop .dl { position: relative; z-index: 2; width: 100%; height: 100%; padding: 0 36px 0 18px; border-radius: inherit; gap: 18px; overflow: hidden;
+  background: radial-gradient(120% 160% at 50% 0%, #1d1d22 0%, #0a0a0b 62%) padding-box; color: #fff; border: 1.5px solid rgba(255,255,255,.12);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.1), 0 24px 50px -26px rgba(0,0,0,.95); transition: border-color .3s; }
+.drop .dl, .drop .dl:hover, .drop .dl:active, .drop .dl.hover-shot { transform: none; }
+.drop:hover .dl, .drop .dl:focus-visible { border-color: transparent; }
+.drop .dl-fill { display: none; }
+.drop .dl-ic { width: 70px; height: 70px; background: #F2F2F3; color: #0E0E10; transition: background .3s; } .drop .dl-ic svg { width: 30px; height: 30px; }
+.drop .dl:hover .dl-ic { background: var(--gold); }
+.drop .dl:hover .dl-ic svg { animation: none; }
+.drop .dl-txt, .drop .dl:hover .dl-txt { color: #fff; }
+.drop .dl-txt b { position: relative; font-size: 31px; text-shadow: 0 0 2px rgba(255,255,255,.5), 0 0 16px rgba(255,201,58,.35); }
+.drop .dl-txt small { font-size: 14px; color: rgba(255,255,255,.55); opacity: 1; }
+/* the text glow at rest: a soft copy of the word that breathes (opacity only); it hands over to the edge light on hover */
+.drop .dl-txt b::after { content: "Download"; position: absolute; left: 0; top: 0; color: transparent; pointer-events: none;
+  text-shadow: 0 0 8px rgba(255,255,255,.7), 0 0 22px rgba(255,201,58,.55), 0 0 40px rgba(139,92,255,.55); opacity: .3; animation: tglow 2.6s ease-in-out infinite alternate; }
+@keyframes tglow { to { opacity: .85; } }
+.drop:hover .dl-txt b::after { animation: none; opacity: 0; transition: opacity .3s; }
+/* the light that runs round the edge: a turning gradient behind the button, seen only through its 1.5px rim */
+.edge-run { position: absolute; inset: 0; z-index: 1; border-radius: inherit; overflow: hidden; opacity: 0; transition: opacity .35s; pointer-events: none; }
+.edge-run i { position: absolute; left: 50%; top: 50%; width: 440px; height: 440px; margin: -220px 0 0 -220px; will-change: transform;
+  background: conic-gradient(from 0deg, transparent 0 58%, rgba(139,92,255,.55) 74%, #8B5CFF 84%, #FFC93A 93%, #fff 96.5%, transparent 97.5%);
+  animation: runround 2.2s linear infinite; animation-play-state: paused; }
+.drop:hover .edge-run, .drop:focus-within .edge-run { opacity: 1; }
+.drop:hover .edge-run i, .drop:focus-within .edge-run i { animation-play-state: running; }
+@keyframes runround { to { transform: rotate(360deg); } }
+/* the click: energy streaks shoot out to both sides */
+.burst { position: absolute; left: 50%; top: 50%; z-index: 0; width: 0; height: 0; pointer-events: none; }
+.burst i { position: absolute; left: 0; top: -1.5px; width: 380px; height: 3px; border-radius: 3px; transform-origin: 0 50%; opacity: 0;
+  background: linear-gradient(90deg, #fff 0%, #FFC93A 18%, #8B5CFF 58%, rgba(139,92,255,0)); transform: rotate(var(--a)) translateX(150px) scaleX(0); }
+.burst i:nth-child(3n) { height: 6px; top: -3px; width: 280px; }
+.drop.fire .burst i { animation: zap .62s cubic-bezier(.2,.9,.3,1) forwards; animation-delay: var(--d); }
+@keyframes zap { 0% { opacity: 1; transform: rotate(var(--a)) translateX(150px) scaleX(0); } 60% { opacity: 1; } 100% { opacity: 0; transform: rotate(var(--a)) translateX(330px) scaleX(1); } }
+
+.bubs { display: flex; gap: 10px; margin-left: 10px; }
+.bub { position: relative; z-index: 3; height: 44px; padding: 0 15px 0 12px; border-radius: 15px; display: flex; align-items: center; gap: 8px; font-size: 13.5px; font-weight: 600; color: var(--tx);
+  background: rgba(22,22,24,.9); box-shadow: var(--hl), 0 18px 34px -16px rgba(0,0,0,.85); transition: transform .4s var(--spring); }
+.bub:hover { transform: translateY(-3px); }
+.bub svg { width: 18px; height: 18px; color: var(--tx); stroke-width: 2; }
+
+/* ================= PAGES ================= */
+.page { display: flex; flex-direction: column; gap: 16px; padding: 4px 0 0 6px; }
+.ph { flex: none; display: flex; align-items: baseline; gap: 18px; }
+.pt { font-size: clamp(44px, 4.4vw, 72px); line-height: 1; font-weight: 650; outline: none; }
+.ps { color: var(--tx3); font-size: 16px; }
+
+.blobwin { flex: 1; min-height: 0; border-radius: 64px; padding: 28px; display: grid; }
+.blobwin .deck-wrap { min-height: 0; }
+.seg { align-self: center; }
+
+/* ================= FEATURES: the speed score in the middle, the features as small bars under it ================= */
+/* the speed score: Five Launcher's overall score and the board on the left, each test's scores as smooth lines on the
+   right (ours solid white, the other launchers dotted greys, named at their line's end). d3.js draws it in. */
+.score { flex: 1; min-height: 0; border-radius: 44px; padding: 26px 30px 16px; display: grid; grid-template-columns: 290px minmax(0, 1fr); gap: 34px;
+  background: radial-gradient(70% 90% at 0% 0%, #222227 0%, var(--panel) 60%); }
+.sc-side { display: flex; flex-direction: column; align-items: flex-start; gap: 8px; min-height: 0; }
+.sc-side h3, .g-side h3 { display: inline-flex; align-items: center; gap: 9px; font-size: 18px; }
+.sc-side h3 svg { width: 20px; height: 20px; color: var(--tx2); stroke-width: 2; }
+.sc-side .sample { margin-left: 0; }
+.sc-big { display: flex; align-items: baseline; gap: 8px; margin-top: 6px; }
+.sc-big b { font-size: clamp(72px, 6.4vw, 104px); font-weight: 650; line-height: .9; font-variant-numeric: tabular-nums; font-kerning: none; }
+.sc-big span { font-size: 22px; font-weight: 600; color: var(--tx3); }
+.sc-sub { font-size: 13.5px; line-height: 1.45; color: var(--tx2); }
+.sc-board { list-style: none; margin: 8px 0 0; padding: 0; width: 100%; display: flex; flex-direction: column; gap: 9px; }
+.sc-board li { display: grid; grid-template-columns: 24px minmax(0, 1fr) 34px; grid-template-rows: auto 8px; column-gap: 10px; row-gap: 5px; align-items: center; }
+.sc-board .r { grid-row: 1 / 3; width: 24px; height: 24px; border-radius: 50%; display: grid; place-items: center; font-size: 12px; font-weight: 700; background: var(--card2); color: var(--tx2); }
+.sc-board .n { font-size: 14px; font-weight: 600; color: var(--tx2); }
+.sc-board b { grid-row: 1 / 3; grid-column: 3; text-align: right; font-size: 17px; font-weight: 700; font-variant-numeric: tabular-nums; color: var(--tx2); }
+.sc-board .bar { grid-column: 2; height: 8px; border-radius: 99px; background: var(--card); overflow: hidden; }
+.sc-board .bar i { display: block; height: 100%; border-radius: 99px; background: #4a4a51; transform-origin: 0 50%; transform: scaleX(0); }
+.sc-board li.me .r { background: var(--gold); color: var(--on-acc); }
+.sc-board li.me .n, .sc-board li.me b { color: var(--tx); }
+.sc-board li.me .bar i { background: var(--acc); }
+.score.go .sc-board .bar i { transform: none; transition: transform 1.2s var(--soft) .3s; }
+.score.go .sc-board li:nth-child(2) .bar i { transition-delay: .4s; } .score.go .sc-board li:nth-child(3) .bar i { transition-delay: .5s; } .score.go .sc-board li:nth-child(4) .bar i { transition-delay: .6s; }
+.g-note { margin-top: auto; font-size: 11.5px; line-height: 1.4; color: var(--tx3); }
+.g-main { display: flex; flex-direction: column; min-width: 0; min-height: 0; }
+.g-top { display: flex; align-items: center; gap: 18px; margin-bottom: 8px; }
+.g-title { font-size: 15px; font-weight: 600; color: var(--tx2); }
+.g-x { margin-left: auto; font-style: normal; font-size: 13px; font-weight: 700; padding: 5px 12px; border-radius: 999px; color: var(--gold); background: var(--gold-soft); }
+.g-plot { position: relative; flex: 1; min-height: 0; overflow: hidden; cursor: crosshair; }
+.g-plot svg { position: absolute; left: 0; top: 0; stroke: none; }
+.g-lines { z-index: 1; } .g-back { z-index: 3; pointer-events: none; }
+.g-plot text { fill: #6e6e76; stroke: none; font: 500 11.5px Fredoka, system-ui, sans-serif; }
+.g-plot .yl { text-anchor: end; dominant-baseline: middle; } .g-plot .xl { text-anchor: middle; font-size: 12.5px; fill: #8E8E96; }
+.g-plot .gl { stroke: rgba(255,255,255,.07); stroke-width: 1; } .g-plot .gv { stroke: rgba(255,255,255,.035); stroke-width: 1; }
+.g-plot .l-me { fill: none; stroke: #F2F2F3; stroke-width: 3.5; stroke-linecap: round; }
+.g-plot .l-me-dot { fill: #F2F2F3; stroke: #161618; stroke-width: 2.5; }
+.g-plot .l-them { fill: none; stroke-width: 2.2; stroke-linecap: round; }
+.g-plot .t2 { stroke: #A3A3AB; stroke-dasharray: 1.5 6; } .g-plot .t1 { stroke: #7d7d85; stroke-dasharray: 7 6; } .g-plot .t0 { stroke: #5f5f67; stroke-dasharray: 1.5 4; }
+.g-plot .l-them-dot { fill: #4a4a51; stroke: #161618; stroke-width: 2; }
+.g-plot .end { dominant-baseline: middle; font-size: 13px; font-weight: 600; fill: #8E8E96; }
+.g-plot .end.me { fill: #F4F4F5; font-size: 14px; }
+/* the panel that slides off the lines (the card's own colour, with a soft leading edge) */
+.g-cover { position: absolute; z-index: 2; top: -4px; bottom: 26px; right: -60px; background: linear-gradient(90deg, rgba(22,22,24,0), #18181b 46px); will-change: transform; }
+.score.go .g-cover { transform: translateX(110%); transition: transform 1.6s cubic-bezier(.45,.05,.25,1); }
+.g-guide { position: absolute; z-index: 4; left: 0; top: 10px; bottom: 30px; width: 1px; background: rgba(255,255,255,.28); opacity: 0; transition: opacity .15s; pointer-events: none; }
+.g-tip { position: absolute; z-index: 5; left: 0; top: 0; display: flex; flex-direction: column; gap: 4px; padding: 9px 12px; border-radius: 14px; background: #29292D; box-shadow: var(--hl), 0 14px 30px -14px rgba(0,0,0,.8); font-size: 12.5px; font-weight: 600; white-space: nowrap; opacity: 0; transition: opacity .15s; pointer-events: none; }
+.g-tip b { font-size: 12px; color: var(--tx3); }
+.g-tip span { display: flex; align-items: center; gap: 7px; color: var(--tx2); } .g-tip span.me { color: var(--tx); }
+.g-tip em { margin-left: auto; padding-left: 16px; font-style: normal; font-weight: 700; font-variant-numeric: tabular-nums; }
+.g-tip i { position: relative; width: 16px; height: 3px; border-radius: 2px; background: repeating-linear-gradient(90deg, #8E8E96 0 3px, transparent 3px 6px); }
+.g-tip .me i { background: var(--acc); }
+.score.hover .g-guide, .score.hover .g-tip { opacity: 1; }
+
+/* the feature bars: small, one row; the description pops up above on hover or focus */
+.fbars { position: relative; z-index: 5; flex: none; display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 10px; }
+.fbar { position: relative; height: 58px; border-radius: 18px; outline: none; cursor: default; transition: transform .35s var(--spring); }
+.fbar:hover, .fbar:focus-visible { transform: translateY(-3px); }
+.fbar .fx { position: absolute; inset: 0; border-radius: inherit; overflow: hidden; isolation: isolate; display: flex; align-items: center; gap: 10px; padding: 0 12px 0 9px;
+  background: radial-gradient(120% 140% at 20% 0%, #26262c 0%, #18181b 70%); box-shadow: inset 0 1px 0 rgba(255,255,255,.1), inset 0 0 0 1px rgba(255,255,255,.035), 0 14px 26px -18px rgba(0,0,0,.9); }
+.fbar:focus-visible .fx { box-shadow: inset 0 0 0 2px var(--acc); }
+.fbar .f-ic { width: 38px; height: 38px; border-radius: 12px; margin: 0; flex: none; transition: transform .5s var(--spring); }
+.fbar .f-ic svg { width: 19px; height: 19px; }
+.fbar:hover .f-ic { transform: rotate(-10deg) scale(1.08); }
+.fbar b { font-size: 13.5px; font-weight: 600; line-height: 1.15; }
+.fx-glow { position: absolute; left: 0; top: 0; width: 180px; height: 180px; margin: -90px 0 0 -90px; border-radius: 50%; z-index: -1; background: radial-gradient(closest-side, rgba(255,201,58,.14), transparent); opacity: 0; transition: opacity .3s; pointer-events: none; }
+.fbar:hover .fx-glow { opacity: 1; }
+.ftip { position: absolute; z-index: 10; left: 50%; bottom: calc(100% + 10px); width: 250px; margin-left: -125px; padding: 11px 14px; border-radius: 16px; background: #29292D; box-shadow: var(--hl), 0 18px 34px -16px rgba(0,0,0,.9);
+  font-size: 13px; line-height: 1.45; color: var(--tx2); opacity: 0; transform: translateY(6px) scale(.96); transition: opacity .18s, transform .35s var(--soft); pointer-events: none; }
+.fbar:first-child .ftip { left: 0; margin-left: 0; } .fbar:last-child .ftip { left: auto; right: 0; margin-left: 0; }
+.fbar:hover .ftip, .fbar:focus-visible .ftip { opacity: 1; transform: none; }
+.fbar.squish .fx { animation: squish .5s var(--out); }
+@keyframes squish { 0% { transform: scale(1); } 30% { transform: scale(1.05, .9); } 60% { transform: scale(.97, 1.04); } 100% { transform: scale(1); } }
+.rip { position: absolute; z-index: -1; width: 30px; height: 30px; margin: -15px 0 0 -15px; border-radius: 50%; border: 2px solid rgba(255,201,58,.7); pointer-events: none; animation: rip .7s var(--out) forwards; }
+@keyframes rip { from { transform: scale(.3); opacity: 1; } to { transform: scale(8); opacity: 0; } }
+
+.updates-body { flex: 1; min-height: 0; display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr); gap: 16px; }
+.latest { border-radius: 52px; padding: 40px; }
+.latest h3 { font-size: 64px; }
+.rel { border-radius: 34px; padding: 18px 24px; }
+.faq-body { flex: 1; min-height: 0; max-width: 900px; margin: 0; }
+.qa { border-radius: 34px; } .q { padding: 20px 64px 20px 26px; }
+
+.cr { flex: 1; min-height: 0; display: grid; grid-template-columns: minmax(0, .95fr) minmax(0, .6fr) minmax(0, .6fr); grid-template-rows: repeat(4, auto); align-content: center; gap: 14px 16px; align-items: start; }
+.cr-avatar { grid-column: 1; grid-row: 1 / 5; align-self: center; justify-self: center; width: min(100%, 60vh); aspect-ratio: 1; height: auto; border-radius: 50%; background: #4a1690; box-shadow: 0 40px 80px -40px rgba(0,0,0,.9); }
+.cr-banner { grid-column: 2 / 4; height: clamp(110px, 18vh, 170px); border-radius: 999px; }
+.cr-banner img { object-position: 50% 40%; }
+.cr-me { grid-column: 2 / 4; border-radius: 40px; padding: 24px 28px; }
+.cr-me h3 { font-size: 36px; line-height: 1; } .cr-me p { color: var(--tx2); margin-top: 10px; font-size: 15.5px; }
+.cr-links { grid-column: 2 / 4; display: flex; gap: 14px; }
+.rl { width: 92px; height: 92px; border-radius: 50%; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; font-size: 12px; font-weight: 600; color: var(--tx2); transition: transform .35s var(--spring), color .2s; }
+.rl svg { width: 26px; height: 26px; color: var(--tx); stroke-width: 2; }
+.rl:hover { transform: translateY(-4px) scale(1.05); color: var(--tx); }
+.rl:active { transform: scale(.94); transition-duration: .08s; }
+.cr-card { border-radius: 34px; padding: 22px 24px; align-self: stretch; }
+.cr-card.wcard { grid-column: 2; grid-row: 4; } .cr-card.muted { grid-column: 3; grid-row: 4; }
+.cr-card b { font-size: 18px; font-weight: 650; }
+.cr-card.wcard p { margin-top: 6px; color: #3a3a40; font-size: 15px; }
+.cr-card.muted p { color: var(--tx3); font-size: 13.5px; }
+
+/* ================= THE BACKGROUND (d3.js builds it; three styles to preview) =================
+   All three are painted once and only moved (transform), or not moved at all. They sit under everything at low
+   contrast so they never pull the eye from the content. */
+.bgfx { position: fixed; inset: 0; z-index: 0; overflow: hidden; pointer-events: none; }
+.bgfx > div { position: absolute; inset: 0; opacity: 0; transition: opacity .6s; }
+.bgfx[data-bg="liquid"] .bg-liquid, .bgfx[data-bg="dots"] .bg-dots, .bgfx[data-bg="voxel"] .bg-voxel { opacity: 1; }
+/* slow dark liquid: a few soft blobs drift and pass through each other */
+.bg-liquid i { position: absolute; border-radius: 50%; will-change: transform; animation: drift 46s ease-in-out infinite alternate; }
+.bg-liquid i:nth-child(1) { width: 62vmax; height: 62vmax; left: -14vmax; top: -22vmax; background: radial-gradient(closest-side, rgba(255,255,255,.045), transparent); }
+.bg-liquid i:nth-child(2) { width: 54vmax; height: 54vmax; right: -16vmax; bottom: -24vmax; background: radial-gradient(closest-side, rgba(255,201,58,.04), transparent); animation-duration: 58s; animation-delay: -20s; }
+.bg-liquid i:nth-child(3) { width: 40vmax; height: 40vmax; left: 34vw; top: 30vh; background: radial-gradient(closest-side, rgba(160,150,255,.03), transparent); animation-duration: 52s; animation-delay: -34s; }
+.bg-liquid i:nth-child(4) { width: 30vmax; height: 30vmax; left: 8vw; bottom: -6vh; background: radial-gradient(closest-side, rgba(255,255,255,.03), transparent); animation-duration: 40s; animation-delay: -12s; }
+@keyframes drift { 0% { transform: translate(0, 0) scale(1); } 50% { transform: translate(14vw, 9vh) scale(1.12); } 100% { transform: translate(-8vw, 16vh) scale(.92); } }
+/* dot grid: faint dots; near the mouse a lens of bigger, brighter dots (same grid, so they swell in place) */
+.bg-dots { background: radial-gradient(circle, rgba(255,255,255,.075) 1.1px, transparent 1.7px) 0 0 / 26px 26px; }
+.lens { position: absolute; left: 0; top: 0; width: 340px; height: 340px; border-radius: 50%; overflow: hidden; will-change: transform;
+  -webkit-mask-image: radial-gradient(closest-side, #000 30%, transparent); mask-image: radial-gradient(closest-side, #000 30%, transparent); opacity: 0; transition: opacity .4s; }
+.lens.on { opacity: 1; }
+.lens > i { position: absolute; left: 0; top: 0; width: 100vw; height: 100vh; will-change: transform; }
+.bg-dots .lens > i { background: radial-gradient(circle, rgba(255,255,255,.3) 2.2px, transparent 2.9px) 0 0 / 26px 26px; }
+/* voxel: a very faint block pattern (made once in d3.js), a brighter copy shows under the mouse like a spotlight */
+.bg-voxel { background-size: 192px 192px; opacity: 0; }
+.bg-voxel .lens { width: 420px; height: 420px; }
+.bg-voxel .lens > i { background-size: 192px 192px; }
+
+/* the preview panel (temporary: for Omar to pick a background) */
+.bgpick { position: fixed; z-index: 50; right: 22px; top: 18px; display: flex; align-items: center; gap: 4px; padding: 5px 5px 5px 14px; border-radius: 999px; background: rgba(22,22,24,.92); box-shadow: var(--hl), 0 16px 34px -14px rgba(0,0,0,.8); font-size: 12.5px; font-weight: 600; color: var(--tx3); }
+.bgpick button { border: 0; cursor: pointer; padding: 7px 12px; border-radius: 999px; background: none; font: 600 12.5px Fredoka, system-ui, sans-serif; color: var(--tx2); transition: background .2s, color .2s; }
+.bgpick button:hover { background: rgba(255,255,255,.07); color: var(--tx); }
+.bgpick button[aria-pressed="true"] { background: var(--acc); color: var(--on-acc); }
+
+/* ================= SMALLER SCREENS ================= */
+@media (max-height: 820px) and (min-width: 981px) {
+  h1 .l1 { font-size: clamp(50px, 5vw, 80px); } .h-title { gap: 12px; } .h-col { top: 3%; gap: 20px; } .drop { height: 96px; }
+  .biglist a { font-size: 23px; } .score { padding: 20px 26px 12px; gap: 26px; } .sc-sub, .g-note { display: none; } .fbar { height: 52px; }
+}
+@media (max-width: 1280px) and (min-width: 981px) { .app { grid-template-columns: 220px minmax(0, 1fr); } .biglist a { font-size: 22px; } .biglist a i { display: none; } .g-note { display: none; } }
+@media (max-width: 980px) {
+  .app { height: auto; display: block; padding: 72px 12px 12px; }
+  .rail { position: fixed; top: 0; left: 0; right: 0; height: 64px; flex-direction: row; align-items: center; gap: 8px; padding: 0 10px; background: var(--frame); }
+  .rail .brand span, .rail .pill-dl span, .progress, .biglist a i { display: none; }
+  .rail-nav { display: block; flex: 1; min-width: 0; } .biglist { flex-direction: row; overflow-x: auto; scrollbar-width: none; } .biglist a { font-size: 15px; padding: 8px 12px; }
+  .rail .pill-dl { height: 42px; padding: 0 13px; }
+  .v-home { display: flex; flex-direction: column; align-items: center; gap: 16px; container-type: normal; }   /* size containment gave it 0 height in the flow */
+  .v-home > * { position: relative; left: auto; right: auto; top: auto; bottom: auto; }
+  .scene { order: 1; width: 100%; aspect-ratio: 16 / 10; border-radius: 30px; }
+  .h-col { width: 100%; } .drop { width: 100%; margin: 0; } .bubs { margin: 0; flex-wrap: wrap; }
+  .updates-body, .cr { display: flex; flex-direction: column; }
+  .score { grid-template-columns: 1fr; gap: 18px; padding: 22px 18px; } .g-plot { flex: none; height: 300px; } .fbars { grid-template-columns: 1fr 1fr; } .ftip { display: none; }
+  .blobwin { height: 64vw; flex: none; border-radius: 36px; padding: 14px; }
+  .cr-avatar { width: 70vw; }
+  .bgpick { top: auto; bottom: 12px; right: 12px; }
+}
+@media (prefers-reduced-motion: reduce) { .pulse, .bg-liquid i { animation: none !important; } }
+.lite .bg-liquid i { animation: none; }
+.lite .lens { display: none; }
+
+/* Project sites carry the OmarFive logo top left; it links back to the hub (Nov 18 2026) */
+.brand.omar .omar-mark { width: 36px; height: 36px; border-radius: 50% 50% 50% 16%; background: #f4f4f5; color: #0b0b0c; display: grid; place-items: center; font-weight: 700; font-size: 18px; transition: border-radius .5s cubic-bezier(.3,1.4,.4,1), transform .5s cubic-bezier(.3,1.4,.4,1), background .3s, color .3s; }
+.brand.omar:hover .omar-mark { border-radius: 50% 16% 50% 50%; transform: rotate(-8deg); background: #ff2e9a; color: #fff; }

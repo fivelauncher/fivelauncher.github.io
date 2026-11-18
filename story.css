@@ -1,0 +1,27 @@
+/* The launcher story on Home (story.js). Colours here are a black-and-white placeholder, like the story itself: a black window with a turning gold-and-violet neon edge, and inside it a
+   20-second loop of using Five Launcher, from installing it to pressing Play. The loop itself is drawn by three.js on
+   one canvas (assets/story/story3d.js); weak PCs and reduced motion get a still picture instead. This file is only the
+   window, the canvas / still, and the step caption with its seven ticks. */
+/* The story is the right side of the page's background: a fixed layer behind everything, fading out to the left
+   (so the Home text sits on calm ground), shown on Home only. Colours are a black-and-white placeholder. */
+.stage-bg { position: fixed; top: 0; bottom: 0; right: 0; left: 34vw; z-index: 0; pointer-events: none; opacity: 0; visibility: hidden;
+  transition: opacity .6s ease, visibility 0s .6s;
+  -webkit-mask-image: linear-gradient(90deg, transparent, rgba(0,0,0,.3) 14%, rgba(0,0,0,.85) 28%, #000 36%); mask-image: linear-gradient(90deg, transparent, rgba(0,0,0,.3) 14%, rgba(0,0,0,.85) 28%, #000 36%); }
+body:has(#v-home:not([hidden]):not(.leaving)) .stage-bg { opacity: 1; visibility: visible; transition: opacity .8s ease; }
+.stage-bg .story { position: absolute; inset: 0; background: #000; }
+@media (max-width: 720px) { .stage-bg { left: 0; -webkit-mask-image: linear-gradient(180deg, transparent 52%, rgba(0,0,0,.7) 78%); mask-image: linear-gradient(180deg, transparent 52%, rgba(0,0,0,.7) 78%); } }   /* phones: only below the text */
+.story canvas.gl, .story img.still { position: absolute; left: 0; top: 0; width: 100%; height: 100%; display: block; }
+.story img.still { object-fit: cover; }
+.story [hidden] { display: none !important; }
+
+/* caption: which step this is (one pill per step, story.js switches them), and seven ticks that fill as the loop runs */
+.cap { position: absolute; left: 22px; top: 13px; z-index: 6; display: flex; align-items: center; gap: 9px; padding: 4px 14px 4px 4px; border-radius: 999px; background: rgba(22,22,24,.94); box-sizing: border-box;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.12), inset 0 0 0 1px rgba(255,255,255,.06), 0 8px 20px -8px rgba(0,0,0,.8); font-family: Fredoka, system-ui, sans-serif; font-size: 14px; font-weight: 600; color: #F4F4F5; white-space: nowrap;
+  opacity: 0; transform: translateY(-16px) scale(.9); transform-origin: 14px 50%; transition: opacity .16s, transform .22s cubic-bezier(.7,0,.84,0); }
+.cap.on { opacity: 1; transform: none; transition: opacity .18s .1s, transform .5s cubic-bezier(.3,1.6,.45,1) .1s; }
+.cap b { width: 24px; height: 24px; border-radius: 50%; display: grid; place-items: center; background: #FFC93A; color: #0E0E10; font-size: 12.5px; font-weight: 650; }
+.still-shot .cap { transition: none; }
+.ticks { position: absolute; right: 26px; top: 27px; z-index: 6; display: flex; gap: 5px; }
+.ticks i { width: 20px; height: 4px; border-radius: 2px; background: rgba(255,255,255,.14); overflow: hidden; }
+.ticks u { display: block; height: 100%; background: #FFC93A; transform-origin: 0 50%; transform: scaleX(0); }
+@media (max-width: 720px) { .ticks { display: none; } }
