@@ -1,0 +1,57 @@
+{
+ "title": "Home is now a library",
+ "items": [
+  "Home is now a 3D library, and every instance is a book on its shelves.",
+  "Click a book to pick that instance. Play starts it.",
+  "Your character wears your own skin and looks at your mouse.",
+  "Library is back to a grid, with the instance opening on the right.",
+  "Each account keeps its own skin."
+ ],
+ "images": [
+  "1-home.webp",
+  "3-pick.webp",
+  "5-skin.webp"
+ ],
+ "slides": [
+  {
+   "media": "1-home.webp",
+   "title": "Home is now a library",
+   "text": "Home is a real 3D library, rendered in Blender. Your character stands in the middle, and their head and body turn to follow your mouse."
+  },
+  {
+   "media": "2-books.webp",
+   "title": "Every instance is a book",
+   "text": "Each of your instances is its own book on the shelves. Its banner is the cover, and its name is written on the spine. Point at a book to see the instance's name."
+  },
+  {
+   "media": "3-pick.webp",
+   "title": "Pick a book to play it",
+   "text": "Click a book, or rest your mouse on it for a moment. It slides out with a red ribbon, and Play now starts that instance. The book you had before slides back in."
+  },
+  {
+   "media": "4-gold.webp",
+   "title": "OmarFive's mods, in gold",
+   "text": "The gold books are the mods made by OmarFive, the person behind this launcher. Click one to open its page. You can hide them in Settings, under \"OmarFive's mods on Home\"."
+  },
+  {
+   "media": "5-skin.webp",
+   "title": "You, in your own skin",
+   "text": "The character wears the skin you choose in Skins, and stays sharp at any window size. Each account keeps its own skin, so switching accounts switches the skin too."
+  },
+  {
+   "media": "6-items.webp",
+   "title": "Enchanted things on the shelves",
+   "text": "An enchanted sword, book and trident sit on the shelves, shining with the same glint as in the game. The book and the trident float and spin like dropped items."
+  },
+  {
+   "media": "7-library.webp",
+   "title": "Library: grid and viewer",
+   "text": "Library is back to a grid of cards. Click one and it opens on the right. The arrows button makes it fill the page, and Esc steps back."
+  },
+  {
+   "media": "8-start.webp",
+   "title": "Ready as soon as it opens",
+   "text": "The room and your books are ready the moment the launcher opens, and Home stays smooth, even with lots of instances."
+  }
+ ]
+}
