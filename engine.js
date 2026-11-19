@@ -21,7 +21,19 @@ const q = new URLSearchParams(location.search);
 // Omar, Nov 19 2026: the site always moves, even with Windows animation effects off (that sets prefers-reduced-motion). ?still still works.
 const reduced = false;
 const still = q.has('still') || reduced;
-const lite = q.has('lite') || navigator.connection?.saveData || (navigator.deviceMemory || 8) <= 2 || (navigator.hardwareConcurrency || 8) <= 2;
+// No real GPU (hardware acceleration off in the browser, or a basic display driver): the browser then draws every
+// frame on the CPU, so the always-moving pieces made the whole site lag (Omar, Nov 19 2026). Such PCs get lite mode
+// too: still background, no hover light, the story still picture, a shorter morph. Tab switches still move.
+const noGpu = !q.has('forcegl') && (() => {
+  try {
+    const g = document.createElement('canvas').getContext('webgl'); if (!g) return true;
+    const d = g.getExtension('WEBGL_debug_renderer_info'), name = d ? String(g.getParameter(d.UNMASKED_RENDERER_WEBGL)) : '';
+    g.getExtension('WEBGL_lose_context')?.loseContext();
+    return /swiftshader|llvmpipe|software|basic render/i.test(name);
+  } catch { return true; }
+})();
+if (noGpu) document.documentElement.classList.add('nogpu');
+const lite = q.has('lite') || noGpu || navigator.connection?.saveData || (navigator.deviceMemory || 8) <= 2 || (navigator.hardwareConcurrency || 8) <= 2;
 if (lite) document.documentElement.classList.add('lite');
 const $ = (s, r = document) => r.querySelector(s), $$ = (s, r = document) => [...r.querySelectorAll(s)];
 const mobile = () => innerWidth <= 980;

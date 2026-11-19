@@ -248,6 +248,10 @@ h1 .l2 { font-size: clamp(22px, 2.1vw, 34px); font-weight: 550; color: var(--tx2
 /* no reduced-motion override: Omar wants the motion for everyone (Nov 19 2026) */
 .lite .bg-liquid i { animation: none; }
 .lite .lens { display: none; }
+/* no real GPU (engine.js sets .nogpu): the browser redraws the whole screen on the CPU for ANY moving thing, even the
+   8 px dot, so nothing loops at rest. Measured Nov 19 2026: 828 ms of drawing per second before, 2 ms after. */
+.nogpu .badge i::after { animation: none; opacity: 0; }
+.nogpu .drop .dl-txt b::after { animation: none; opacity: .55; }
 
 /* Project sites carry the OmarFive logo top left; it links back to the hub (Nov 18 2026) */
 .brand.omar .omar-mark { width: 36px; height: 36px; border-radius: 50% 50% 50% 16%; background: #f4f4f5; color: #0b0b0c; display: grid; place-items: center; font-weight: 700; font-size: 18px; transition: border-radius .5s cubic-bezier(.3,1.4,.4,1), transform .5s cubic-bezier(.3,1.4,.4,1), background .3s, color .3s; }
