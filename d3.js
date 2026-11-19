@@ -7,7 +7,8 @@
 // there or the tab is open. Lite mode (weak PCs) and reduced motion get the still versions.
 const $ = (s, r = document) => r.querySelector(s), $$ = (s, r = document) => [...r.querySelectorAll(s)];
 const q = new URLSearchParams(location.search);
-const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
+// Omar, Nov 19 2026: the site always moves, even with Windows animation effects off (that sets prefers-reduced-motion). ?still still works.
+const reduced = false;
 const lite = document.documentElement.classList.contains('lite');
 const still = q.has('still') || reduced;
 const canHover = !lite && matchMedia('(hover: hover)').matches;

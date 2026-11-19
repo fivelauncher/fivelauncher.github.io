@@ -15,7 +15,7 @@
 const q = new URLSearchParams(location.search);
 const host = document.querySelector('.stage-bg .story');
 const home = document.querySelector('#v-home');
-const stillMode = q.has('still') || matchMedia('(prefers-reduced-motion: reduce)').matches || document.documentElement.classList.contains('lite');
+const stillMode = q.has('still') || document.documentElement.classList.contains('lite');
 const V3 = q.has('v3');
 let T = 20000; const BEATS = [0, 2150, 5300, 7900, 10250, 13250, 15500, 19450];
 const CAPS = V3 ? ['Install', 'Sign in with Microsoft', 'Import a Modrinth pack or make your own', 'Set your skin', 'A banner, a logo and a name', 'Add mods from Discover', 'Press Play'] : [];

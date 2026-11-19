@@ -4,9 +4,10 @@
 // so this panel is the one place on the site that uses them.
 // Self-contained: loads its own stylesheet, works on any page that has links to the setup file.
 const SETUP = /Five-Launcher-Setup\.exe$/i;
-const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
+// Omar, Nov 19 2026: the site always moves, even with Windows animation effects off (that sets prefers-reduced-motion). ?still still works.
+const reduced = false;
 
-const css = document.createElement('link'); css.rel = 'stylesheet'; css.href = 'download-help.css?v=1';
+const css = document.createElement('link'); css.rel = 'stylesheet'; css.href = 'download-help.css?v=2';
 document.head.appendChild(css);
 
 // the two Windows screens, drawn (not screenshots), with the button to press ringed in yellow

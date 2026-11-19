@@ -78,7 +78,5 @@ html.dh-open, html.dh-open body { overflow: hidden; }
   .dh-steps { grid-template-columns: 1fr; }
   .dh-pic { aspect-ratio: 16 / 9; }
 }
-@media (prefers-reduced-motion: reduce) {
-  .dh *, .dh-panel, .dh-scrim { transition: none !important; animation: none !important; }
-}
+/* no reduced-motion override: Omar wants the motion for everyone (Nov 19 2026) */
 .dh-panel h2:focus, .dh-panel h2:focus-visible { outline: none; }

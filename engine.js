@@ -18,7 +18,8 @@ const PIN = 'v0.3.4';
 const ver = t => (t || '').replace(/^v/, '').split('.').map(Number);
 const notNewer = t => { const a = ver(t), b = ver(PIN); for (let i = 0; i < 3; i++) if ((a[i] || 0) !== (b[i] || 0)) return (a[i] || 0) < (b[i] || 0); return true; };
 const q = new URLSearchParams(location.search);
-const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
+// Omar, Nov 19 2026: the site always moves, even with Windows animation effects off (that sets prefers-reduced-motion). ?still still works.
+const reduced = false;
 const still = q.has('still') || reduced;
 const lite = q.has('lite') || navigator.connection?.saveData || (navigator.deviceMemory || 8) <= 2 || (navigator.hardwareConcurrency || 8) <= 2;
 if (lite) document.documentElement.classList.add('lite');

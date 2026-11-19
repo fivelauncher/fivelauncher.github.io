@@ -202,10 +202,7 @@ canvas.liquid { position: absolute; inset: 0; width: 100%; height: 100%; z-index
 .unclip { overflow: visible !important; }      /* a list lets its cards fly out of it during a switch */
 .morph-off { visibility: hidden; }             /* cards scrolled out of sight sit a switch out */
 
-@media (prefers-reduced-motion: reduce) {
-  *, *::before, *::after { transition-duration: .01s !important; animation: none !important; }
-  .rise { opacity: 1; transform: none; }
-}
+/* no reduced-motion override: Omar wants the motion for everyone (Nov 19 2026) */
 /* weak PCs (main.js sets .lite): no video, no hover light, a shorter morph without the liquid edge */
 .lite .lights { display: none; }
 /* the views share one grid cell of #board (the morph needs both tabs on top of each other during a switch) */

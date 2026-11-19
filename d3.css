@@ -245,7 +245,7 @@ h1 .l2 { font-size: clamp(22px, 2.1vw, 34px); font-weight: 550; color: var(--tx2
   .cr-avatar { width: 70vw; }
   .bgpick { top: auto; bottom: 12px; right: 12px; }
 }
-@media (prefers-reduced-motion: reduce) { .pulse, .bg-liquid i { animation: none !important; } }
+/* no reduced-motion override: Omar wants the motion for everyone (Nov 19 2026) */
 .lite .bg-liquid i { animation: none; }
 .lite .lens { display: none; }
 
