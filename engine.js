@@ -173,8 +173,8 @@ const SCROLLERS = '[data-scroll]';                       // lists that clip thei
 const PAIRS = ['[data-pic]'];                            // the big pictures always turn into each other
 const board = $('#board');
 // ---- tunables ----
-const MOVE = lite ? 380 : 440;      // ms: one card's flight
-const WAVE = lite ? 110 : 170;      // ms: how far apart the first and the last card leave
+const MOVE = lite && !noGpu ? 380 : 440;      // ms: one card's flight
+const WAVE = lite && !noGpu ? 110 : 170;      // ms: how far apart the first and the last card leave
 const TOTAL = MOVE + WAVE;          // ms: the whole switch
 const CURVE = [.5, 0, .18, 1.22];   // the flight curve: slow lift-off, quick middle, a small overshoot as it lands
 const FIT = [.85, 1.18];             // how far a card's content may be squeezed or stretched to follow its shape
@@ -601,3 +601,10 @@ addEventListener('load', () => {
   const next = () => { const im = imgs.shift(); if (!im) return; im.loading = 'eager'; im.decode().catch(() => {}).finally(() => idle(next)); };
   idle(next);
 }, { once: true });
+
+// ---------- warm the pictures: decode every tab's images while the page is idle (Nov 19 2026) ----------
+// Otherwise the browser decoded a tab's screenshots the first time the tab (or the Screens shuffle) showed them,
+// in the middle of the move: a 40-100 ms freeze, a visible stutter on a 360 Hz screen.
+(window.requestIdleCallback || (f => setTimeout(f, 1500)))(() => {
+  for (const img of document.images) { img.loading = 'eager'; img.decode?.().catch(() => {}); }
+}, { timeout: 3000 });

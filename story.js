@@ -52,7 +52,17 @@ if (host) {
   }
 
   let s3 = null, raf = 0, live = false, frozen = false, start = 0, from0 = 0, pending = q.has('story') ? Math.max(0, Math.min(59999, +q.get('story') || 0)) : null;
-  const frame = now => { const t = (((now - start) % T) + T) % T; s3.render(t); ui(t); raf = requestAnimationFrame(frame); };
+  // At most ~120 story frames a second, evenly paced (Nov 19 2026): on a 360 Hz screen the story drew 360 times a
+  // second, so the GPU had no room left and any other load (a game, a render) made the whole page stutter.
+  // `every` = how many screen refreshes each story frame stays up: 1 at 60-144 Hz, 2 at 240 Hz, 3 at 360 Hz.
+  let lastNow = 0, gap = 16.7, every = 1, n = 0;
+  const frame = now => {
+    raf = requestAnimationFrame(frame);
+    if (lastNow) { gap += (Math.min(50, now - lastNow) - gap) * .05; every = Math.max(1, Math.round(8.33 / gap)); }
+    lastNow = now;
+    if (++n < every) return; n = 0;
+    const t = (((now - start) % T) + T) % T; s3.render(t); ui(t);
+  };
   const shouldRun = () => !home.hidden && !document.hidden;
   function sync() {
     if (!s3 || frozen) return;
