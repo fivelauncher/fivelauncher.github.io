@@ -105,15 +105,14 @@ for (const el of $$('.fbar')) {
 // dotted greys, each named at its line's end), with the overall score board on the left. SVG at real pixel size,
 // redrawn on resize; nothing in the SVG animates. When Features opens, a panel slides off the lines (transform only),
 // the board's bars grow (transform) and the big score counts up. Hovering shows a guide and every score for a test.
-// PLACEHOLDER NUMBERS: replace with the real test before publishing (and keep "Sample data" until then).
 {
   const card = $('.score'), view = $('#v-features');
-  const TESTS = ['Opens', 'Starts Minecraft', 'Installs a modpack', 'Memory use'];
+  // Measured Nov 19 2026 on Omar's PC (bench/vs.ps1): Five Launcher 0.4.0 against another launcher, median of 5 runs.
+  // In each test the better one scores 100, the other 100 x best / theirs. `v` is the measured value shown on hover.
+  const TESTS = ["Opens", "Memory use", "CPU at rest"];
   const L8 = [
-    { name: 'Five Launcher', me: true, s: [97, 93, 95, 92] },
-    { name: 'Prism Launcher', s: [78, 74, 69, 81] },
-    { name: 'Modrinth App', s: [56, 68, 61, 47] },
-    { name: 'CurseForge', s: [43, 57, 50, 36] },
+    { name: 'Five Launcher', me: true, s: [100, 100, 54], v: ["0.8 s", "214 MB", "63% of a core"] },
+    { name: 'Other launchers', s: [70, 55, 100], v: ["1.2 s", "387 MB", "34% of a core"] },
   ];
   if (card && view) {
     const overall = l => Math.round(l.s.reduce((a, v) => a + v, 0) / l.s.length);
@@ -134,7 +133,8 @@ for (const el of $$('.fbar')) {
     const smooth = pts => pts.map((p, i) => {
       if (!i) return `M${p[0]},${p[1]}`;
       const p0 = pts[i - 2] || pts[i - 1], p1 = pts[i - 1], p3 = pts[i + 1] || p, k = .2;
-      const c1 = [p1[0] + (p[0] - p0[0]) * k, p1[1] + (p[1] - p0[1]) * k], c2 = [p[0] - (p3[0] - p1[0]) * k, p[1] - (p3[1] - p1[1]) * k];
+      const lo = Math.min(p1[1], p[1]), hi = Math.max(p1[1], p[1]), cl = v => Math.min(hi, Math.max(lo, v));   // no overshoot past the points
+      const c1 = [p1[0] + (p[0] - p0[0]) * k, cl(p1[1] + (p[1] - p0[1]) * k)], c2 = [p[0] - (p3[0] - p1[0]) * k, cl(p[1] - (p3[1] - p1[1]) * k)];
       return `C${c1[0].toFixed(1)},${c1[1].toFixed(1)} ${c2[0].toFixed(1)},${c2[1].toFixed(1)} ${p[0].toFixed(1)},${p[1].toFixed(1)}`;
     }).join('');
     function draw() {
@@ -158,7 +158,7 @@ for (const el of $$('.fbar')) {
           + `<text class="end${l.me ? ' me' : ''}" x="${(x(n - 1) + 14).toFixed(1)}" y="${end.y.toFixed(1)}">${l.name}</text>`;
       }).join('');
       cover.style.left = `${Lm - 6}px`;
-      plot.setAttribute('aria-label', `Scores per test, sample data. ${L8.map(l => `${l.name}: ${l.s.join(', ')}`).join('. ')}.`);
+      plot.setAttribute('aria-label', `Scores per test. ${L8.map(l => `${l.name}: ${TESTS.map((t, i) => `${t} ${l.v[i]}`).join(', ')}`).join('. ')}.`);
     }
     new ResizeObserver(draw).observe(plot);
     plot.addEventListener('pointermove', e => {
@@ -167,7 +167,7 @@ for (const el of $$('.fbar')) {
       let i = 0; for (let k = 1; k < geo.n; k++) if (Math.abs(geo.x(k) - px) < Math.abs(geo.x(i) - px)) i = k;
       const xx = geo.x(i);
       guide.style.transform = `translateX(${xx.toFixed(1)}px)`;
-      tip.innerHTML = `<b>${TESTS[i]}</b>` + ranked.map(l => `<span class="${l.me ? 'me' : 'them'}"><i></i>${l.name}<em>${l.s[i]}</em></span>`).join('');
+      tip.innerHTML = `<b>${TESTS[i]}</b>` + ranked.map(l => `<span class="${l.me ? 'me' : 'them'}"><i></i>${l.name}<em>${l.v ? l.v[i] : l.s[i]}</em></span>`).join('');
       const tw = tip.offsetWidth, tx = xx + 16 + tw > geo.W ? xx - 16 - tw : xx + 16;
       tip.style.transform = `translate(${tx.toFixed(1)}px, 6px)`;
       card.classList.add('hover');
