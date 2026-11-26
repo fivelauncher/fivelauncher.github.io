@@ -1,0 +1,53 @@
+{
+ "title": "First Public Release",
+ "items": [
+  "Four Home scenes: Home now has four worlds: the 3D library, a night study, a sunset camp and a portal grotto (the new default, because purple). Pick yours in Settings, Look.",
+  "Everything moves smoother: Lists glide, panels crossfade and switching tabs stopped glitching. The Play button also stopped vanishing every time you changed tabs. It was shy.",
+  "A tidier Discover and Library: Discover keeps the list and the preview side by side with less clutter. Library lists your instances as neat rows, with Play on each.",
+  "Your cape, on your skin: The Skins page now shows your cape on your 3D character. Turn him around and admire it. Everyone else will.",
+  "Updates sit by the title now: The update button moved next to the page title with a little sparkle, so it stops looking like Downloads. Discover got a compass icon too.",
+  "Your reports, fixed: Screenshots inside mod folders and JPEGs show up, Home no longer flashes the wrong skin, and the buttons on screenshots work when you hover. Thanks, testers."
+ ],
+ "images": [
+  "1-scenes.webp",
+  "2-smooth.webp",
+  "3-layouts.webp"
+ ],
+ "slides": [
+  {
+   "media": "1-scenes.webp",
+   "title": "Four Home scenes",
+   "text": "Home now has four worlds: the 3D library, a night study, a sunset camp and a portal grotto (the new default, because purple). Pick yours in Settings, Look."
+  },
+  {
+   "media": "2-smooth.webp",
+   "title": "Everything moves smoother",
+   "text": "Lists glide, panels crossfade and switching tabs stopped glitching. The Play button also stopped vanishing every time you changed tabs. It was shy."
+  },
+  {
+   "media": "3-layouts.webp",
+   "title": "A tidier Discover and Library",
+   "text": "Discover keeps the list and the preview side by side with less clutter. Library lists your instances as neat rows, with Play on each."
+  },
+  {
+   "media": "4-cape.webp",
+   "title": "Your cape, on your skin",
+   "text": "The Skins page now shows your cape on your 3D character. Turn him around and admire it. Everyone else will."
+  },
+  {
+   "media": "5-buttons.webp",
+   "title": "Updates sit by the title now",
+   "text": "The update button moved next to the page title with a little sparkle, so it stops looking like Downloads. Discover got a compass icon too."
+  },
+  {
+   "media": "7-fixes.webp",
+   "title": "Your reports, fixed",
+   "text": "Screenshots inside mod folders and JPEGs show up, Home no longer flashes the wrong skin, and the buttons on screenshots work when you hover. Thanks, testers."
+  },
+  {
+   "media": "8-livecount.webp",
+   "title": "A live player count",
+   "text": "The launcher says \"still here\" every few minutes, so we can see how many people play. No name, no account. Switch it off in Settings, Privacy."
+  }
+ ]
+}
